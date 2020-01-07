@@ -1,0 +1,19 @@
+{
+  "name": "nightly-release-workflow-tester-bar",
+  "version": "0.1.0",
+  "author": "Michael Bradley <michaelsbradleyjr@gmail.com> (https://github.com/michaelsbradleyjr/)",
+  "description": "Used to test a nightly relese GitHub Actions workflow",
+  "homepage": "https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/tree/master/packages/bar#readme",
+  "repository": {
+    "directory": "packages/bar",
+    "type": "git",
+    "url": "https://github.com/michaelsbradleyjr/nightly-release-workflow-tester.git"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "main": "index.js",
+  "files": [],
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "chalk": "2.4.2",
+    "lerna": "3.19.0",
+    "minimist": "1.2.0"
+  },
+  "license": "MIT",
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "build": "echo build!",
+    "cwtree": "node scripts/check-working-tree",
+    "qa:full": "echo qa:full!",
+    "release": "node scripts/release",
+    "release:nightly": "node scripts/nightly-release",
+    "typecheck": "echo typecheck!"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}
