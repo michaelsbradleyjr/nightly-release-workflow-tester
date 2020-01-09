@@ -62,7 +62,7 @@ jobs:
           echo npm is v$(npm --version)
           echo yarn is v$(yarn --version); echo
           git config user.name 'EmbarkBot'
-          git config user.email '<>'
+          git config user.email '<59620708+embarkbot@users.noreply.github.com>'
           npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
           npm whoami 1>/dev/null
           echo Logged into NPM as user $(npm whoami); echo
