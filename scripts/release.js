@@ -273,7 +273,7 @@ const runCommand = (cmd, inherit = true, display) => {
 
   try {
     runCommand(lernaCmd);
-    if (localRef ===
+    if (bump !== 'from-package' && localRef ===
         runCommand(`git rev-parse ${branch}`, false).toString().trim()) {
       let action, cmd, noPubMsg;
       if (versionOnly) {
