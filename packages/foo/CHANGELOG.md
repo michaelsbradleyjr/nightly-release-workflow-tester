@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1-nightly.0](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/compare/v1.0.0...v1.0.1-nightly.0) (2020-01-09)
+
+
+### Bug Fixes
+
+* make a patch-level change to packages/foo ([a423ca6](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/commit/a423ca6e6add2a6dd6f7187ccf39eb98491a2ea2))
+
+
+
+
+
 # 1.0.0 (2020-01-09)
 
 

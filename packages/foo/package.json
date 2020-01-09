@@ -1,6 +1,6 @@
 {
   "name": "nightly-release-workflow-tester-foo",
-  "version": "1.0.0",
+  "version": "1.0.1-nightly.0",
   "author": "Michael Bradley <michaelsbradleyjr@gmail.com> (https://github.com/michaelsbradleyjr/)",
   "description": "Used to test a nightly relese GitHub Actions workflow",
   "homepage": "https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/tree/master/packages/foo#readme",
