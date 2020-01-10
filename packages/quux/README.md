@@ -1,3 +1,3 @@
 # `nightly-release-workflow-tester-quux`
 
-> Used to test a nightly relese GitHub Actions workflow
+> Used to test a nightly release GitHub Actions workflow
