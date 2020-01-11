@@ -301,7 +301,7 @@ const runCommand = (cmd, inherit = true, display) => {
     } else {
       const lernaDocsUrl = 'https://github.com/lerna/lerna/tree/master/commands/publish#bump-from-package';
       checkPkgMsg = [
-        `Check the package registry to verify if any packages were published.`,
+        ` Check the package registry to verify if any packages were published.`,
         `If so they may need to be flagged as deprecated since the`,
         `${cyan(`lerna publish`)} command exited with error. In some cases it`,
         `may be possible to salvage an imcomplete release by using the`,
