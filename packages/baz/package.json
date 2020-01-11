@@ -1,0 +1,17 @@
+{
+  "name": "nightly-release-workflow-tester-baz",
+  "version": "2.0.1",
+  "author": "Michael Bradley <michaelsbradleyjr@gmail.com> (https://github.com/michaelsbradleyjr/)",
+  "description": "Used to test a nightly release GitHub Actions workflow",
+  "homepage": "https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/tree/master/packages/baz#readme",
+  "repository": {
+    "directory": "packages/baz",
+    "type": "git",
+    "url": "https://github.com/michaelsbradleyjr/nightly-release-workflow-tester.git"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "main": "index.js",
+  "files": [],
+  "scripts": {}
+}
