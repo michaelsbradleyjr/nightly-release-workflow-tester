@@ -298,8 +298,6 @@ const runCommand = (cmd, inherit = true, display) => {
       `Updating ${cyan('nightly')} dist-tags to point to the new stable`,
       `version...`
     );
-
-    // get rid of this
     logInfo('Packages to tag:', pkgsToTag.map(({name}) => cyan(name)).join(', '));
 
     const _pkgsToTag = pkgsToTag.slice();
