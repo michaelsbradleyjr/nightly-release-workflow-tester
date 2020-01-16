@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1-nightly.0](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/compare/v3.0.0...v3.0.1-nightly.0) (2020-01-16)
+
+
+### Bug Fixes
+
+* make a patch-level change to packages/foo ([c533c3b](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/commit/c533c3bad0440fdfcfb56593b63dcf10484a2e10))
+
+
+
+
+
 # [3.0.0](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/compare/v3.0.0-nightly.0...v3.0.0) (2020-01-16)
 
 **Note:** Version bump only for package nightly-release-workflow-tester-foo
