@@ -300,20 +300,20 @@ const runCommand = (cmd, inherit = true, display) => {
     );
 
     // get rid of this
-    logInfo(pkgsToTag.map(cyan).join(', '));
+    logInfo('Packages to tag:', pkgsToTag.map(({name}) => cyan(name)).join(', '));
 
     const _pkgsToTag = pkgsToTag.slice();
     try {
-      for (const {pkgName} of pkgsToTag) {
-        runCommand(`npm dist-tag ${pkgName}@${updatedCurrentVersion} nightly`);
+      for (const {name} of pkgsToTag) {
+        runCommand(`npm dist-tag add ${name}@${updatedCurrentVersion} nightly`);
         _pkgsToTag.shift();
       }
     } catch (e) {
       logError(`A problem occured. Please check the error above.`);
+      const packages = _pkgsToTag.map(({name}) => cyan(name)).join(', ');
       logError(
         `NPM dist-tag ${cyan('nightly')} was not updated for the following`,
-        `packages: ${_pkgsToTag.map(cyan).join(', ')}. Make sure to complete`,
-        `the updates manually.`
+        `packages: ${packages}. Make sure to complete the updates manually.`
       );
       logError(failMsg);
       process.exit(1);
