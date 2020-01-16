@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-nightly.0](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/compare/v3.0.1-nightly.0...v3.1.0-nightly.0) (2020-01-16)
+
+
+### Features
+
+* make a minor-level change to packages/quux ([6559b57](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/commit/6559b57f26b33ada06eb3bd32f8818983d970d1b))
+
+
+
+
+
 ## [3.0.1-nightly.0](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/compare/v3.0.0...v3.0.1-nightly.0) (2020-01-16)
 
 
