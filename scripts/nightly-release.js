@@ -3,9 +3,10 @@
 const chalk = require('chalk');
 const {execSync} = require('child_process');
 const path = require('path');
+const {readJsonSync} = require('fs-extra');
 
 const branch = `master`;
-const commitMsg = `chore(release): %v`;
+const commitMsg = `chore(prerelease): %v`;
 const distTag = `nightly`;
 const preId = `nightly`;
 const remote = `origin`;
@@ -53,10 +54,12 @@ const runCommand = (cmd, inherit = true, display) => {
     process.exit(1);
   }
 
-  let registry;
   const lernaJsonPath = path.join(__dirname, '../lerna.json');
+  logInfo(`Reading ${cyan(lernaJsonPath)}...`);
+
+  let lernaJson, registry;
   try {
-    const lernaJson = require(lernaJsonPath);
+    lernaJson = readJsonSync(lernaJsonPath);
     registry = lernaJson.command.publish.registry;
     if (!registry) throw new Error('missing registry in lerna.json');
   } catch (e) {
@@ -69,23 +72,62 @@ const runCommand = (cmd, inherit = true, display) => {
     process.exit(1);
   }
 
-  let localRef;
+  logInfo(`Determining the current branch...`);
+
+  let currentBranch;
+  try {
+    currentBranch = runCommand(`git rev-parse --abbrev-ref HEAD`, false)
+      .toString()
+      .trim();
+  } catch (e) {
+    logError(`Could not determine the branch. Please check the error above.`);
+    logError(failMsg);
+    process.exit(1);
+  }
+
+  if (currentBranch === branch) {
+    logSuccess(`Current branch and release branch are the same.`);
+  } else {
+    logError(
+      `Current branch ${cyan(currentBranch)} is not the same as release branch`,
+      `${cyan(branch)}.`
+    );
+    logError(failMsg);
+    process.exit(1);
+  }
+
+  logInfo(
+    `Fetching commits from ${cyan(remote)} to compare local and remote`,
+    `branches...`
+  );
+
+  try {
+    runCommand(`git fetch ${remote}`, false);
+  } catch (e) {
+    logError(`Could not fetch latest commits. Please check the error above.`);
+    logError(failMsg);
+    process.exit(1);
+  }
+
+  let localRef, remoteRef;
   try {
     localRef = runCommand(`git rev-parse ${branch}`, false).toString().trim();
+    remoteRef = runCommand(`git rev-parse ${remote}/${branch}`, false)
+      .toString()
+      .trim();
   } catch (e) {
     logError(`A problem occured. Please check the error above.`);
     logError(failMsg);
     process.exit(1);
   }
 
-  let forcePublish;
-  try {
-    forcePublish = !!(runCommand(
-      `npx lerna changed --json --all 2>/dev/null || true`,
-      false
-    ).toString().trim());
-  } catch (e) {
-    logError(`A problem occured. Please check the error above.`);
+  if (localRef === remoteRef) {
+    logSuccess(`Local branch is in sync with remote branch.`);
+  } else {
+    logError(
+      `Local branch ${cyan(branch)} is not in sync with`,
+      `${cyan(`${remote}/${branch}`)}.`
+    );
     logError(failMsg);
     process.exit(1);
   }
@@ -97,7 +139,6 @@ const runCommand = (cmd, inherit = true, display) => {
     `--conventional-prerelease`,
     `--create-release github`,
     `--dist-tag ${distTag}`,
-    (forcePublish && `--force-publish`) || ``,
     `--git-remote ${remote}`,
     `--message "${commitMsg}"`,
     `--preid ${preId}`,

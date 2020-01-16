@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const {execSync} = require('child_process');
 const minimist = require('minimist');
 const path = require('path');
+const {readJsonSync} = require('fs-extra');
 
 const args = minimist(process.argv.slice(2));
 
@@ -13,11 +14,22 @@ const bump = args._[0] || DEFAULT_BUMP;
 const DEFAULT_COMMIT_MSG = `chore(release): %v`;
 const commitMsg = args['commit-message'] || DEFAULT_COMMIT_MSG;
 
+const DEFAULT_CONVENTIONAL_COMMITS = true;
+let cCommits;
+// with --no-conventional-commits cli option `args['conventional-commits']` will be `false`
+// there is never a need to use --conventional-commits cli option because the
+// default behavior is `true`
+if (args['conventional-commits'] === false) {
+  cCommits = false;
+} else {
+  cCommits = DEFAULT_CONVENTIONAL_COMMITS;
+}
+
 const DEFAULT_CONVENTIONAL_GRADUATE = false;
-const graduate = args['conventional-graduate'] || DEFAULT_CONVENTIONAL_GRADUATE;
+const cGraduate = args['conventional-graduate'] || DEFAULT_CONVENTIONAL_GRADUATE;
 
 const DEFAULT_CONVENTIONAL_PRERELEASE = false;
-const prerelease = args['conventional-prerelease'] || DEFAULT_CONVENTIONAL_PRERELEASE;
+const cPrerelease = args['conventional-prerelease'] || DEFAULT_CONVENTIONAL_PRERELEASE;
 
 // if not using --no-create-release or --no-push cli option then an environment
 // variable named GH_TOKEN must be defined with a properly scoped GitHub
@@ -112,20 +124,32 @@ const runCommand = (cmd, inherit = true, display) => {
     process.exit(1);
   }
 
+  const lernaJsonPath = path.join(__dirname, '../lerna.json');
+  logInfo(`Reading ${cyan(lernaJsonPath)}...`);
+
+  let lernaJson;
+  try {
+    lernaJson = readJsonSync(lernaJsonPath);
+  } catch (e) {
+    console.error(e.stack || e);
+    logError(
+      `Could not read ${cyan(lernaJsonPath)}. Please check the error above.`
+    );
+    logError(failMsg);
+    process.exit(1);
+  }
+
   let DEFAULT_REGISTRY, registry;
   if (!versionOnly) {
-    const lernaJsonPath = path.join(__dirname, '../lerna.json');
     try {
-      const lernaJson = require(lernaJsonPath);
-
       DEFAULT_REGISTRY = lernaJson.command.publish.registry;
       if (!DEFAULT_REGISTRY) throw new Error('missing registry in lerna.json');
       registry = args.registry || DEFAULT_REGISTRY;
     } catch (e) {
       console.error(e.stack || e);
       logError(
-        `Could not read values from ${cyan(lernaJsonPath)}.`,
-        `Please check the error above.`
+        `Could not read values from ${cyan(lernaJsonPath)}. Please check the`,
+        `error above.`
       );
       logError(failMsg);
       process.exit(1);
@@ -177,8 +201,8 @@ const runCommand = (cmd, inherit = true, display) => {
   if (!noPush) {
     reportSetting(`Git remote`, remote, DEFAULT_GIT_REMOTE);
     logInfo(
-      `Fetching commits from ${cyan(remote)}`,
-      `to compare local and remote branches...`
+      `Fetching commits from ${cyan(remote)} to compare local and remote`,
+      `branches...`
     );
 
     try {
@@ -192,9 +216,9 @@ const runCommand = (cmd, inherit = true, display) => {
     let remoteRef;
     try {
       localRef = runCommand(`git rev-parse ${branch}`, false).toString().trim();
-      remoteRef = (
-        runCommand(`git rev-parse ${remote}/${branch}`, false).toString().trim()
-      );
+      remoteRef = runCommand(`git rev-parse ${remote}/${branch}`, false)
+        .toString()
+        .trim();
     } catch (e) {
       logError(`A problem occured. Please check the error above.`);
       logError(failMsg);
@@ -223,7 +247,9 @@ const runCommand = (cmd, inherit = true, display) => {
   }
 
   if (skipQa) {
-    logWarning(`Skipping the QA suite`);
+    logWarning(
+      `Skipping the QA suite. You already built the packages, right?`
+    );
   } else {
     logInfo(
       `It's time to run the QA suite, this will take awhile...`
@@ -241,8 +267,9 @@ const runCommand = (cmd, inherit = true, display) => {
 
   logInfo(`${versionOnly ? 'Versioning' : 'Publishing'} with Lerna...`);
   if (bump) reportSetting(`Version bump`, bump, DEFAULT_BUMP);
-  reportSetting(`Conventional graduate option`, graduate, DEFAULT_CONVENTIONAL_GRADUATE);
-  reportSetting(`Conventional prerelease option`, prerelease, DEFAULT_CONVENTIONAL_PRERELEASE);
+  reportSetting(`Conventional commits option`, cCommits, DEFAULT_CONVENTIONAL_COMMITS);
+  reportSetting(`Conventional graduate option`, cGraduate, DEFAULT_CONVENTIONAL_GRADUATE);
+  reportSetting(`Conventional prerelease option`, cPrerelease, DEFAULT_CONVENTIONAL_PRERELEASE);
   if (!noPush) reportSetting(`Create GitHub release option`, createRelease, DEFAULT_CREATE_RELEASE);
   if (!versionOnly) reportSetting(`NPM dist-tag`, distTag, DEFAULT_DIST_TAG);
   reportSetting(`Force publish option`, forcePublish, DEFAULT_FORCE_PUBLISH);
@@ -256,9 +283,9 @@ const runCommand = (cmd, inherit = true, display) => {
     `lerna`,
     (versionOnly && `version`) || `publish`,
     bump || ``,
-    `--conventional-commits`,
-    (graduate && `--conventional-graduate${graduate === true ? '' : `=${graduate}`}`) || ``,
-    (prerelease && `--conventional-prerelease${prerelease === true ? '' : `=${prerelease}`}`) || ``,
+    (cCommits && `--conventional-commits`) || ``,
+    (cCommits && cGraduate && `--conventional-graduate${cGraduate === true ? '' : `=${cGraduate}`}`) || ``,
+    (cCommits && cPrerelease && `--conventional-prerelease${cPrerelease === true ? '' : `=${cPrerelease}`}`) || ``,
     (!noPush && createRelease && `--create-release github`) || ``,
     (!versionOnly && `--dist-tag ${distTag}`) || ``,
     (forcePublish && `--force-publish${forcePublish === true ? '' : `=${forcePublish}`}`) || ``,
