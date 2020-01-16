@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-nightly.0](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/compare/v3.1.0...v4.0.0-nightly.0) (2020-01-16)
+
+
+### Features
+
+* make a major-level change to packages/bar ([cd94a3b](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/commit/cd94a3bbe4a3c76dad6bda4ae294e5719e78ed59))
+
+
+### BREAKING CHANGES
+
+* cause a major version bump
+
+
+
+
+
 # [3.1.0](https://github.com/michaelsbradleyjr/nightly-release-workflow-tester/compare/v3.1.0-nightly.0...v3.1.0) (2020-01-16)
 
 **Note:** Version bump only for package root
