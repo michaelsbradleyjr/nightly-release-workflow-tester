@@ -2,7 +2,7 @@
   "devDependencies": {
     "chalk": "2.4.2",
     "lerna": "3.19.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.2",
     "fs-extra": "8.1.0",
     "semver": "5.6.0"
   },
